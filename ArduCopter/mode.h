@@ -835,6 +835,87 @@ private:
 };
 
 
+
+class ModeDrawStar : public Mode {
+
+public:
+    // inherit constructor
+    using Copter::Mode::Mode;
+
+    bool init(bool ignore_checks) override;
+    void run() override;
+
+    bool requires_GPS() const override { return true; }
+    bool has_manual_throttle() const override { return false; }
+    bool allows_arming(bool from_gcs) const override { return false; }
+    //bool allows_arming(bool from_gcs) const override { return from_gcs; }
+    bool is_autopilot() const override { return true; }
+    bool in_guided_mode() const { return true; }
+    bool has_user_takeoff(bool must_navigate) const override { return false; }
+    //bool has_user_takeoff(bool must_navigate) const override { return true; }
+
+    /*
+    void set_angle(const Quaternion &q, float climb_rate_cms, bool use_yaw_rate, float yaw_rate_rads);
+    bool set_destination(const Vector3f& destination, bool use_yaw = false, float yaw_cd = 0.0, bool use_yaw_rate = false, float yaw_rate_cds = 0.0, bool yaw_relative = false);
+    bool set_destination(const Location_Class& dest_loc, bool use_yaw = false, float yaw_cd = 0.0, bool use_yaw_rate = false, float yaw_rate_cds = 0.0, bool yaw_relative = false);
+    bool get_wp(Location_Class &loc) override;
+    void set_velocity(const Vector3f& velocity, bool use_yaw = false, float yaw_cd = 0.0, bool use_yaw_rate = false, float yaw_rate_cds = 0.0, bool yaw_relative = false, bool log_request = true);
+    bool set_destination_posvel(const Vector3f& destination, const Vector3f& velocity, bool use_yaw = false, float yaw_cd = 0.0, bool use_yaw_rate = false, float yaw_rate_cds = 0.0, bool yaw_relative = false);
+
+    void limit_clear();
+    void limit_init_time_and_pos();
+    void limit_set(uint32_t timeout_ms, float alt_min_cm, float alt_max_cm, float horiz_max_cm);
+    bool limit_check();
+
+    bool do_user_takeoff_start(float final_alt_above_home) override;
+
+    GuidedMode mode() const { return guided_mode; }
+
+    void angle_control_start();
+    void angle_control_run();
+    */
+
+protected:
+
+   // const char *name() const override { return "GUIDED"; }
+   // const char *name4() const override { return "GUID"; }
+
+    const char *name() const override { return "DRAWSTAR"; }
+    const char *name4() const override { return "DRAWSTAR"; }
+
+    /*
+    uint32_t wp_distance() const override;
+    int32_t wp_bearing() const override;
+    float crosstrack_error() const override;
+    */
+
+private:
+
+    Vector3f path[10];
+    int path_num;
+    void generate_path();
+
+    void pos_control_start();
+    /*
+    void vel_control_start();
+    void posvel_control_start();
+
+    void takeoff_run();
+      */
+
+    void pos_control_run();
+    /*
+    void vel_control_run();
+    void posvel_control_run();
+    void set_desired_velocity_with_accel_and_fence_limits(const Vector3f& vel_des);
+    void set_yaw_state(bool use_yaw, float yaw_cd, bool use_yaw_rate, float yaw_rate_cds, bool relative_angle);
+
+    // controls which controller is run (pos or vel):
+    GuidedMode guided_mode = Guided_TakeOff;
+    */
+
+};
+
 class ModeGuidedNoGPS : public ModeGuided {
 
 public:
