@@ -986,6 +986,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_SUBGROUPINFO(follow, "FOLL", 27, ParametersG2, AP_Follow),
 #endif
 
+    AP_GROUPINFO("STAR_LENGTH_CM", 28, ParametersG2, star_length_cm, 400),
+
     AP_GROUPEND
 };
 

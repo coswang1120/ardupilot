@@ -48,7 +48,7 @@ void Copter::ModeDrawStar::pos_control_start()
 // initialise guided mode's position controller
 void Copter::ModeDrawStar::generate_path()
 {
-    float length_cm=400;
+    float length_cm=g2.star_length_cm;
     wp_nav->get_wp_stopping_point(path[0]);
     path[1]=path[0]+Vector3f(1.0f,0,0)*length_cm;
     path[2]=path[1]+Vector3f(0,1.0f,0)*length_cm;
