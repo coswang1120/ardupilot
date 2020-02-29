@@ -36,7 +36,7 @@ AP_Raspberry::AP_Raspberry(void)
 void AP_Raspberry::init(const AP_SerialManager& serial_manager)
 {
     // check for DEVO_DPort
-    if ((_port = serial_manager.find_serial(AP_SerialManager::SerialProtocol_OPEN_MV, 0))) {
+    if ((_port = serial_manager.find_serial(AP_SerialManager::SerialProtocol_Raspberry, 0))) {
         _port->set_flow_control(AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE);
         // initialise uart
         _port->begin(AP_SERIALMANAGER_Raspberry_BAUD, AP_SERIALMANAGER_Raspberry_BUFSIZE_RX, AP_SERIALMANAGER_Raspberry_BUFSIZE_TX);

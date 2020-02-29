@@ -160,7 +160,7 @@ void Copter::init_ardupilot()
     // Do GPS init
     gps.set_log_gps_bit(MASK_LOG_GPS);
     gps.init(serial_manager);
-
+    raspberry.init(serial_manager);
     init_compass();
 
 #if OPTFLOW == ENABLED
