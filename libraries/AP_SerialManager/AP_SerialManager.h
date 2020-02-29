@@ -102,7 +102,7 @@ public:
         SerialProtocol_ESCTelemetry = 16,
         SerialProtocol_Devo_Telem = 17,
         SerialProtocol_OpticalFlow = 18,
-        SerialProtocol_Raspberry = 19,
+        SerialProtocol_OPEN_MV = 19,
     };
 
     // get singleton instance

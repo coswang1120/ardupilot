@@ -14,36 +14,36 @@
 */
 
 /*
-   Raspberry library
+   OpenMV library
 */
 
-#define AP_SERIALMANAGER_Raspberry_BAUD         9600
-#define AP_SERIALMANAGER_Raspberry_BUFSIZE_RX        64
-#define AP_SERIALMANAGER_Raspberry_BUFSIZE_TX        64
+#define AP_SERIALMANAGER_OPEN_MV_BAUD         115200
+#define AP_SERIALMANAGER_OPENMV_BUFSIZE_RX        64
+#define AP_SERIALMANAGER_OPENMV_BUFSIZE_TX        64
 
-#include "AP_Raspberry.h"
+#include "AP_OpenMV.h"
 
 extern const AP_HAL::HAL& hal;
 
 //constructor
-AP_Raspberry::AP_Raspberry(void)
+AP_OpenMV::AP_OpenMV(void)
 {
     _port = NULL;
     _step = 0;
 }
 
 // init - perform require initialisation including detecting which protocol to use
-void AP_Raspberry::init(const AP_SerialManager& serial_manager)
+void AP_OpenMV::init(const AP_SerialManager& serial_manager)
 {
     // check for DEVO_DPort
-    if ((_port = serial_manager.find_serial(AP_SerialManager::SerialProtocol_Raspberry, 0))) {
+    if ((_port = serial_manager.find_serial(AP_SerialManager::SerialProtocol_OPEN_MV, 0))) {
         _port->set_flow_control(AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE);
         // initialise uart
-        _port->begin(AP_SERIALMANAGER_Raspberry_BAUD, AP_SERIALMANAGER_Raspberry_BUFSIZE_RX, AP_SERIALMANAGER_Raspberry_BUFSIZE_TX);
+        _port->begin(AP_SERIALMANAGER_OPEN_MV_BAUD, AP_SERIALMANAGER_OPENMV_BUFSIZE_RX, AP_SERIALMANAGER_OPENMV_BUFSIZE_TX);
     }
 }
 
-bool AP_Raspberry::update()
+bool AP_OpenMV::update()
 {
     if(_port == NULL)
         return false;

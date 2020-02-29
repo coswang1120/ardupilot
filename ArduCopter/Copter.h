@@ -44,7 +44,6 @@
 #include <AP_AccelCal/AP_AccelCal.h>                // interface and maths for accelerometer calibration
 #include <AP_InertialSensor/AP_InertialSensor.h>  // ArduPilot Mega Inertial Sensor (accel & gyro) Library
 #include <AP_AHRS/AP_AHRS.h>
-
 #include <AP_NavEKF2/AP_NavEKF2.h>
 #include <AP_NavEKF3/AP_NavEKF3.h>
 #include <AP_Mission/AP_Mission.h>     // Mission command library
@@ -84,8 +83,7 @@
 #include <AP_Arming/AP_Arming.h>
 #include <AP_SmartRTL/AP_SmartRTL.h>
 #include <AP_TempCalibration/AP_TempCalibration.h>
-
-#include <AP_Raspberry/AP_Raspberry.h>
+#include <AP_OpenMV/AP_OpenMV.h>
 
 // Configuration
 #include "defines.h"
@@ -234,8 +232,8 @@ private:
 
     AP_GPS gps;
 
-    AP_Raspberry raspberry{};
-    
+    AP_OpenMV openmv{};
+
     // flight modes convenience array
     AP_Int8 *flight_modes;
 
@@ -672,9 +670,9 @@ private:
     void rc_loop();
     void throttle_loop();
     void update_batt_compass(void);
+    void update_OpenMV(void);
     void fourhundred_hz_logging();
     void ten_hz_logging_loop();
-	void update_Raspberry(void);
     void twentyfive_hz_logging();
     void three_hz_loop();
     void one_hz_loop();
@@ -797,8 +795,8 @@ private:
     void landinggear_update();
 
     // Log.cpp
-    void Log_Write_Raspberry();	
     void Log_Write_Optflow();
+    void Log_Write_OpenMV();
     void Log_Write_Control_Tuning();
     void Log_Write_Performance();
     void Log_Write_Attitude();

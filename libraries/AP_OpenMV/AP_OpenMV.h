@@ -19,13 +19,13 @@
 #include <AP_AHRS/AP_AHRS.h>
 #include <AP_SerialManager/AP_SerialManager.h>
 
-class AP_Raspberry {
+class AP_OpenMV {
 public:
-    AP_Raspberry();
+    AP_OpenMV();
 
     /* Do not allow copies */
-    AP_Raspberry(const AP_Raspberry &other) = delete;
-    AP_Raspberry &operator=(const AP_Raspberry&) = delete;
+    AP_OpenMV(const AP_OpenMV &other) = delete;
+    AP_OpenMV &operator=(const AP_OpenMV&) = delete;
 
     // init - perform require initialisation including detecting which protocol to use
     void init(const AP_SerialManager& serial_manager);

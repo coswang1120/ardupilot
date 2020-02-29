@@ -129,7 +129,7 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 #endif
     SCHED_TASK_CLASS(AP_Notify,            &copter.notify,              update,          50,  90),
     SCHED_TASK(one_hz_loop,            1,    100),
-    SCHED_TASK(update_Raspberry,       400,     100),
+    SCHED_TASK(update_OpenMV,        400,    100),
     SCHED_TASK(ekf_check,             10,     75),
     SCHED_TASK(gpsglitch_check,       10,     50),
     SCHED_TASK(landinggear_update,    10,     75),
@@ -314,44 +314,43 @@ void Copter::update_batt_compass(void)
     }
 }
 
-
-void Copter::update_Raspberry(void)
+void Copter::update_OpenMV(void)
 {
     // simulation
     bool sim_openmv_new_data = false;
     static uint32_t last_sim_new_data_time_ms = 0;
     if(control_mode != GUIDED) {
         last_sim_new_data_time_ms = millis();
-        raspberry.cx = 80;
-        raspberry.cy = 60;
+        openmv.cx = 80;
+        openmv.cy = 60;
     } else if (millis()- last_sim_new_data_time_ms < 15000) {
         sim_openmv_new_data = true;
-        raspberry.last_frame_ms = millis();
-        raspberry.cx = 1;
-        raspberry.cy = 1;
+        openmv.last_frame_ms = millis();
+        openmv.cx = 1;
+        openmv.cy = 1;
     } else if (millis()- last_sim_new_data_time_ms < 30000) {
         sim_openmv_new_data = true;
-        raspberry.last_frame_ms = millis();
-        raspberry.cx = 160;
-        raspberry.cy = 120;
+        openmv.last_frame_ms = millis();
+        openmv.cx = 160;
+        openmv.cy = 120;
     } else {
         sim_openmv_new_data = false;
-        raspberry.cx = 80;
-        raspberry.cy = 60;
+        openmv.cx = 80;
+        openmv.cy = 60;
     }
 
     // end of simulation code
 
     static uint32_t last_set_pos_target_time_ms = 0;
     Vector3f target = Vector3f(0, 0, 0);
-    if(raspberry.update() || sim_openmv_new_data) {
-        Log_Write_Raspberry();
+    if(openmv.update() || sim_openmv_new_data) {
+        Log_Write_OpenMV();
 
         if(control_mode != GUIDED)
             return;
 
-        int16_t target_body_frame_y = (int16_t)raspberry.cx - 80;  // QQVGA 160 * 120
-        int16_t target_body_frame_z = (int16_t)raspberry.cy - 60;
+        int16_t target_body_frame_y = (int16_t)openmv.cx - 80;  // QQVGA 160 * 120
+        int16_t target_body_frame_z = (int16_t)openmv.cy - 60;
 
         float angle_y_deg = target_body_frame_y * 60.0f / 160.0f;
         float angle_z_deg = target_body_frame_z * 60.0f / 120.0f;
@@ -376,12 +375,6 @@ void Copter::update_Raspberry(void)
         }
     }
 }
-
-
-
-
-
-
 
 // Full rate logging of attitude, rate and pid loops
 // should be run at 400hz
@@ -521,13 +514,11 @@ void Copter::one_hz_loop()
     // indicates that the sensor or subsystem is present but not
     // functioning correctly
     update_sensor_status_flags();
-	
-	gcs().send_text(MAV_SEVERITY_CRITICAL,
-				"Raspberry X:%d Y:%d",
-				raspberry.cx,
-				raspberry.cy);
-	
-	
+
+    gcs().send_text(MAV_SEVERITY_CRITICAL,
+                    "OpenMV X:%d Y:%d",
+                    openmv.cx,
+                    openmv.cy);
 }
 
 // called at 50hz
